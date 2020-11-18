@@ -17,7 +17,7 @@ import java.io.IOException;
 @RequestMapping("kafka")
 public class MemberResource {
     @Autowired
-    private KafkaTemplate<String, Mail> kafkaTemplate; // key = TOPIC value = message
+    private KafkaTemplate<String, Mail> kafkaTemplate; // key = TOPIC value = Mail object
     private static final String TOPIC = "messageTopic";
 
     @GetMapping("/publish")
@@ -26,10 +26,8 @@ public class MemberResource {
         for (Member member : new FileReaderXML().getMembersFromXMLFile()){
             String message = new FileReader().readContentFromTextFile();
             Mail mail = new Mail(member, message);
-            System.out.println(mail);
-            mail.getContent().replace("XX", "TEST");
-            //mail.changeText("XX", mail.getSalutation());
-            //mail.changeText("NN", mail.getMember().getName());
+            mail.setContent(mail.getContent().replace("XX", mail.getSalutation()));
+            mail.setContent(mail.getContent().replace("NN", member.getName()));
             kafkaTemplate.send(TOPIC, mail);
         }
         return "Published successfully!";
