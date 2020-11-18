@@ -6,10 +6,10 @@ public class FileReader {
 
     public final String FILE_NAME = "src/main/resources/content.txt";
 
-    public String readContentFromTextFile(String fileName) {
+    public String readContentFromTextFile() {
         InputStream inputStream = null;
         try {
-            inputStream = new FileInputStream(fileName);
+            inputStream = new FileInputStream(FILE_NAME);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }

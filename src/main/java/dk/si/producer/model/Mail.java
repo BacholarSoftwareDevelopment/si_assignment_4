@@ -1,16 +1,20 @@
 package dk.si.producer.model;
 
+import dk.si.producer.service.Service;
+
+import java.io.IOException;
+
 public class Mail {
 
     private Member member;
     private Gender gender;
     private String content, salutation;
 
-    public Mail(Member member, String content) {
+    public Mail(Member member, String content) throws IOException {
         this.member = member;
-        //this.gender = gender;
         this.content = content;
-        //setSalutation();
+        setGender();
+        setSalutation();
     }
 
     public Member getMember() {
@@ -25,8 +29,13 @@ public class Mail {
         return gender;
     }
 
-    public void setGender(Gender gender) {
-        this.gender = gender;
+    public void setGender() throws IOException {
+        String isMale = new Service().getXMLDataGenderByName(member.getName()).split("<male>")[1].split("</male>")[0].trim();
+        if(isMale.equals("true")){
+            this.gender = Gender.MALE;
+        } else {
+            this.gender = Gender.FEMALE;
+        }
     }
 
     public String getContent() {
@@ -47,5 +56,19 @@ public class Mail {
         } else {
             this.salutation = "Mrs.";
         }
+    }
+
+    public void changeText(String oldChar, String newChar){
+        this.content.replace(oldChar, newChar);
+    }
+
+    @Override
+    public String toString() {
+        return "Mail{" +
+                "member=" + member +
+                ", gender=" + gender +
+                ", content='" + content + '\'' +
+                ", salutation='" + salutation + '\'' +
+                '}';
     }
 }

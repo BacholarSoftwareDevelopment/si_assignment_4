@@ -17,8 +17,9 @@ import java.util.List;
 
 public class FileReaderXML {
 
-    public static void main(String[] args) {
+    public List<Member> getMembersFromXMLFile() {
         String filePath = "src/main/resources/members.xml";
+        List<Member> members = new ArrayList<>();
         File xmlFile = new File(filePath);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
@@ -26,25 +27,18 @@ public class FileReaderXML {
             dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(xmlFile);
             doc.getDocumentElement().normalize();
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
             NodeList nodeList = doc.getElementsByTagName("member");
             //now XML is loaded as Document in memory, lets convert it to Object List
-            List<Member> members = new ArrayList<Member>();
             for (int i = 0; i < nodeList.getLength(); i++) {
-                members.add(getEmployee(nodeList.item(i)));
-            }
-            //lets print Employee list information
-            for (Member emp : members) {
-                System.out.println(emp.toString());
+                members.add(getMember(nodeList.item(i)));
             }
         } catch (SAXException | ParserConfigurationException | IOException e1) {
             e1.printStackTrace();
         }
-
+        return members;
     }
 
-
-    private static Member getEmployee(Node node) {
+    private Member getMember(Node node) {
         //XMLReaderDOM domReader = new XMLReaderDOM();
         Member member = new Member();
         if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -52,12 +46,10 @@ public class FileReaderXML {
             member.setName(getTagValue("name", element));
             member.setEmail(getTagValue("email", element));
         }
-
         return member;
     }
 
-
-    private static String getTagValue(String tag, Element element) {
+    private String getTagValue(String tag, Element element) {
         NodeList nodeList = element.getElementsByTagName(tag).item(0).getChildNodes();
         Node node = (Node) nodeList.item(0);
         return node.getNodeValue();
