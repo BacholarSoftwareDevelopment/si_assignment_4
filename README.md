@@ -3,7 +3,7 @@
 **Participants**
 
     * Morten Feldt
-    * Nur Hassuni
+    * Nur Salem
     * Jörg Oertel
 
 **Technology used**
