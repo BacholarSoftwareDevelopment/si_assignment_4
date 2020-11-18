@@ -12,7 +12,7 @@
 
 **Flow of the project**
 
-
+![diadgramFlow](diagram.png)
 
 ## Assignment 3:  Mail Services
 
