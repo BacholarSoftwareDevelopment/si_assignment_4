@@ -7,7 +7,6 @@ import dk.si.producer.model.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,14 +22,14 @@ public class MemberResource {
     @GetMapping("/publish")
     public String postMessagesToClients() throws IOException {
 
-        for (Member member : new FileReaderXML().getMembersFromXMLFile()){
+        for (Member member : new FileReaderXML().getMembersFromXMLFile()) {
             String message = new FileReader().readContentFromTextFile();
             Mail mail = new Mail(member, message);
             mail.setContent(mail.getContent().replace("XX", mail.getSalutation()));
             mail.setContent(mail.getContent().replace("NN", member.getName()));
-            kafkaTemplate.send(TOPIC, mail);
+            kafkaTemplate.send(TOPIC, member.getName(), mail);
+            ;
         }
         return "Published successfully!";
     }
-
 }

@@ -8,13 +8,23 @@ import java.net.URL;
 
 public class Service {
 
+    private final String API_PATH = "http://www.thomas-bayer.com/restnames/name.groovy?name=";
+    private HttpURLConnection con;
+    private URL url;
+
+    private StringBuilder contentString = new StringBuilder();
+
+    /**
+     *
+     * @param name
+     * @return String
+     * @throws IOException
+     */
     public String getXMLDataGenderByName(String name) throws IOException {
-        URL url = new URL("http://www.thomas-bayer.com/restnames/name.groovy?name=" + name);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        url = new URL( API_PATH+ name);
+        con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("Accept", "application/xml");
-
-        StringBuilder contentString = new StringBuilder();
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
             String lineOfContent;

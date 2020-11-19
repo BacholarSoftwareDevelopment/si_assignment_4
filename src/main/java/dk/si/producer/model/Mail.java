@@ -25,19 +25,6 @@ public class Mail {
         this.member = member;
     }
 
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender() throws IOException {
-        String isMale = new Service().getXMLDataGenderByName(member.getName()).split("<male>")[1].split("</male>")[0].trim();
-        if(isMale.equals("true")){
-            this.gender = Gender.MALE;
-        } else {
-            this.gender = Gender.FEMALE;
-        }
-    }
-
     public String getContent() {
         return content;
     }
@@ -50,25 +37,27 @@ public class Mail {
         return salutation;
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender() throws IOException {
+        String isMale = new Service().getXMLDataGenderByName(member.getName())
+                .split("<male>")[1]
+                .split("</male>")[0]
+                .trim();
+        if(isMale.equals("true")){
+            this.gender = Gender.MALE;
+        } else {
+            this.gender = Gender.FEMALE;
+        }
+    }
+
     public void setSalutation() {
         if (getGender().toString().equals(Gender.MALE.toString())) {
             this.salutation = "Mr.";
         } else {
             this.salutation = "Mrs.";
         }
-    }
-
-    public void changeText(String oldChar, String newChar){
-        this.content.replace(oldChar, newChar);
-    }
-
-    @Override
-    public String toString() {
-        return "Mail{" +
-                "member=" + member +
-                ", gender=" + gender +
-                ", content='" + content + '\'' +
-                ", salutation='" + salutation + '\'' +
-                '}';
     }
 }

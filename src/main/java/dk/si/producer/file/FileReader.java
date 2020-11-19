@@ -4,16 +4,30 @@ import java.io.*;
 
 public class FileReader {
 
-    public final String FILE_NAME = "src/main/resources/content.txt";
+    private InputStream inputStream = null;
+    private StringBuilder contentString = new StringBuilder();
+    private final String FILE_NAME = "src/main/resources/content.txt";
 
-    public String readContentFromTextFile() {
-        InputStream inputStream = null;
+    /**
+     *
+     * @param filename
+     * @return InputStream
+     */
+    public InputStream getInputStream(String filename) {
         try {
-            inputStream = new FileInputStream(FILE_NAME);
+            inputStream = new FileInputStream(filename);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
-        StringBuilder contentString = new StringBuilder();
+        return inputStream;
+    }
+
+    /**
+     *
+     * @return String
+     */
+    public String readContentFromTextFile() {
+        inputStream = getInputStream(FILE_NAME);
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
             String lineOfContent;
@@ -23,7 +37,6 @@ public class FileReader {
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
-
         return contentString.toString();
     }
 }

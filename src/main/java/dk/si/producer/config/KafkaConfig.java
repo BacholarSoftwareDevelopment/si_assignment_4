@@ -1,7 +1,6 @@
 package dk.si.producer.config;
 
 import dk.si.producer.model.Mail;
-import dk.si.producer.model.Member;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +18,7 @@ public class KafkaConfig {
 
     /**
      * Kafka will run on default port 9092 and connect to ZooKeeper’s default port, 2181
+     *
      * @return DefaultKafkaProducerFactory
      */
     @Bean
@@ -33,6 +33,10 @@ public class KafkaConfig {
         return new DefaultKafkaProducerFactory<>(config);
     }
 
+    /**
+     *
+     * @return KafkaTemplate
+     */
     @Bean
     public KafkaTemplate<String, Mail> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());

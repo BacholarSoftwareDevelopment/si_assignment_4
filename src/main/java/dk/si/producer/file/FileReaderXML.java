@@ -17,18 +17,32 @@ import java.util.List;
 
 public class FileReaderXML {
 
+    private final String FILE_PATH = "src/main/resources/members.xml";
+    private final String NODE_TAG = "member";
+    private final String NODE_TAG_NAME = "name";
+    private final String NODE_TAG_EMAIL = "email";
+    private List<Member> members = new ArrayList<>();
+
+    private DocumentBuilderFactory dbFactory;
+    private DocumentBuilder dBuilder;
+    private Document doc;
+
+    private NodeList nodeList;
+
+    /**
+     *
+     * @return List<Member>
+     */
     public List<Member> getMembersFromXMLFile() {
-        String filePath = "src/main/resources/members.xml";
-        List<Member> members = new ArrayList<>();
-        File xmlFile = new File(filePath);
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder;
+        File xmlFile = new File(FILE_PATH);
+        dbFactory = DocumentBuilderFactory.newInstance();
+
         try {
             dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(xmlFile);
+            doc = dBuilder.parse(xmlFile);
             doc.getDocumentElement().normalize();
-            NodeList nodeList = doc.getElementsByTagName("member");
-            //now XML is loaded as Document in memory, lets convert it to Object List
+            nodeList = doc.getElementsByTagName(NODE_TAG);
+
             for (int i = 0; i < nodeList.getLength(); i++) {
                 members.add(getMember(nodeList.item(i)));
             }
@@ -38,17 +52,28 @@ public class FileReaderXML {
         return members;
     }
 
+    /**
+     *
+     * @param node
+     * @return Member
+     */
     private Member getMember(Node node) {
-        //XMLReaderDOM domReader = new XMLReaderDOM();
+
         Member member = new Member();
         if (node.getNodeType() == Node.ELEMENT_NODE) {
             Element element = (Element) node;
-            member.setName(getTagValue("name", element));
-            member.setEmail(getTagValue("email", element));
+            member.setName(getTagValue(NODE_TAG_NAME, element));
+            member.setEmail(getTagValue(NODE_TAG_EMAIL, element));
         }
         return member;
     }
 
+    /**
+     *
+     * @param tag
+     * @param element
+     * @return String
+     */
     private String getTagValue(String tag, Element element) {
         NodeList nodeList = element.getElementsByTagName(tag).item(0).getChildNodes();
         Node node = (Node) nodeList.item(0);
