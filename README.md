@@ -23,7 +23,7 @@
    2. start Kafka server
    3. create "mesageTopic"
       * bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic messageTopic
-   4. run spring boot project at http://localhost:8081
+   4. run spring boot project at http://localhost:8081/kafka/publish
 
  * * *
  
