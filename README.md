@@ -9,6 +9,17 @@
 **Technology used**
 
     * Apache Kafka
+    * Read a list of members from XML file
+    * Read content of message from text file
+    * REST is used for connecting to Thomas-Bayer API
+
+**Userguide**
+
+   1. start zookeeper
+   2. start Kafka server
+   3. create "mesageTopic"
+      * bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic messageTopic
+   4. run spring boot project at http://localhost:8081
 
 **Flow of the project**
 
